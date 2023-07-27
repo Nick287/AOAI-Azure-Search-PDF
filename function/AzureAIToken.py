@@ -1,0 +1,14 @@
+# Set APIkey for Azure OpenAI Service
+API_TYPE = "azure"
+AZURE_OPENAI_API_KEY = "abd3ed676d1d443981237994429781c6"
+AZURE_OPENAI_ENDPOINT = "https://botestopenai.openai.azure.com" 
+AZURE_OPENAI_API_VERSION = '2023-05-15'
+CHAT_MODEL = "boTestGPT35"
+CHAT_COMPLETION_MODEL ="best_text"
+EMBEDDING_MODEL = "text-embedding"
+EMBEDDING_MODEL_TYPE = "text-embedding-ada-002"
+
+# YOUR_AZURE_SEARCH_ENDPOINT
+AZURE_SEARCH_SERVICE_ENDPOINT = "https://boazuresearch.search.windows.net"
+# YOUR_AZURE_SEARCH_ADMIN_KEY
+AZURE_SEARCH_API_KEY = "T2V5rv7qrtQAOCX9QfUQPtHFGDGtaN2DglnEB96OXDAzSeD1iQcW"
