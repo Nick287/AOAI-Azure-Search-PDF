@@ -14,7 +14,7 @@ class NormalizeText:
         return s
 
     def normalize_text_to_page_item(self, s, sep_token = " \n "):
-        array = s.split("\n ")
+        array = s.extract_text().split("\n ")
         return array
 
     def normalize_text_to_itemtext(self, pagesitem, sep_token = " \n "):
@@ -28,16 +28,15 @@ class NormalizeText:
                 texts+=line            
         return self.normalize_text(texts)
     
-    def get_doc_content(self, dbfs_file_path):
+    def get_doc_content(self, pdf_file):
         item_list = []
-        with open(dbfs_file_path, "rb") as pdf_file:  
-            pdf_reader = PyPDF2.PdfReader(pdf_file)  
-            for page in pdf_reader.pages:  
-                pagesitems = self.normalize_text_to_page_item(page)
-                for pagesitem in pagesitems:
-                    page_text = pagesitem.strip()
-                    if page_text == "" or page_text.isdigit():
-                        continue      
-                    line = self.normalize_text_to_itemtext(page_text)
-                    item_list.append(line)
+        pdf_reader = PyPDF2.PdfReader(pdf_file)  
+        for page in pdf_reader.pages:  
+            pagesitems = self.normalize_text_to_page_item(page)
+            for pagesitem in pagesitems:
+                page_text = pagesitem.strip()
+                if page_text == "" or page_text.isdigit():
+                    continue      
+                line = self.normalize_text_to_itemtext(page_text)
+                item_list.append(line)
         return item_list

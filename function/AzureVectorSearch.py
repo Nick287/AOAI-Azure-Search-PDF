@@ -34,6 +34,11 @@ class AzureVectorSearch:
     def __init__(self):  
         self.credential = AzureKeyCredential(AZURE_SEARCH_API_KEY)
 
+    def openAI_ChatCompletion(self, query):
+        retrieval = openai.ChatCompletion.create(engine=CHAT_MODEL,messages=[{'role':"user",'content': query}],max_tokens=500)
+        # Response provided by GPT-3.5
+        return retrieval['choices'][0]['message']['content']
+
     @retry(wait=wait_random_exponential(min=1, max=20), stop=stop_after_attempt(6))
     # Function to generate embeddings for title and content fields, also used for query embeddings
     def generate_embeddings(self, text):
@@ -90,6 +95,12 @@ class AzureVectorSearch:
                             vector_search=vector_search, semantic_settings=semantic_settings)
         result = index_client.create_or_update_index(index)
         return result
+
+
+    def list_index_names(self):
+        index_client = SearchIndexClient(endpoint=AZURE_SEARCH_SERVICE_ENDPOINT, credential=self.credential)
+        index_names = index_client.list_index_names()
+        return index_names
 
     def upload_documents(self, index_name, documents):
         search_client = SearchClient(endpoint=AZURE_SEARCH_SERVICE_ENDPOINT, index_name=index_name, credential=self.credential)
