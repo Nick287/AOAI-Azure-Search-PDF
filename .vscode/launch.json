@@ -9,7 +9,7 @@
             "type": "python",
             "request": "launch",
             "args": [
-                "run", "home.py"
+                "run", "index.py"
             ],
             "program": "/usr/local/bin/streamlit",
             "console": "integratedTerminal",

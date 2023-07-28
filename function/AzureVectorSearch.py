@@ -47,6 +47,13 @@ class AzureVectorSearch:
         embeddings = response['data'][0]['embedding']
         return embeddings
         
+    
+    def delete_search_index(self, index_name):
+        # Delete a search index
+        index_client = SearchIndexClient(
+            endpoint=AZURE_SEARCH_SERVICE_ENDPOINT, credential=self.credential)
+        result = index_client.delete_index(index_name)
+        return result
 
     def create_search_index(self, index_name):
         # Create a search index

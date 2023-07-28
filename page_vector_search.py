@@ -17,7 +17,10 @@ Answer:
 '''
 
 azureVectorSearch = AzureVectorSearch()
-index_names = azureVectorSearch.list_index_names()
+
+with st.spinner(text="Loading..."):
+    index_names = azureVectorSearch.list_index_names()
+
 # index_name = 'surfacepro9-index-001'
 st.title('Please input your question and press enter to search:')
 
@@ -49,4 +52,4 @@ if prompt:
         complet_result = azureVectorSearch.openAI_ChatCompletion(retrieval_prepped)
         st.write(f"{complet_result}\n\n")
 
-    st.success("done!")
+    # st.success("done!")
