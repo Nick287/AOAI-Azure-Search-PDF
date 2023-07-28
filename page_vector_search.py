@@ -16,17 +16,13 @@ SEARCH_CONTENT_HERE
 Answer:
 '''
 
+st.title('Please input your question and press enter to search:')
 azureVectorSearch = AzureVectorSearch()
 
 with st.spinner(text="Loading..."):
     index_names = azureVectorSearch.list_index_names()
-
-# index_name = 'surfacepro9-index-001'
-st.title('Please input your question and press enter to search:')
-
-option = st.selectbox('How would you like to be contacted index?',index_names)
-st.write('You selected:', option)
-index_name = option
+    index_name = st.selectbox('Please select an index name.',index_names)
+    st.write('You selected:', index_name)
 
 prompt = st.text_input('please input your question')
 # If the user hits enter

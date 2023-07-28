@@ -9,7 +9,7 @@
             "type": "python",
             "request": "launch",
             "args": [
-                "run", "index.py"
+                "run", "page_upload_data.py"
             ],
             "program": "/usr/local/bin/streamlit",
             "console": "integratedTerminal",

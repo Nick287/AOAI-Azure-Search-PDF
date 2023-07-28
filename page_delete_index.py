@@ -9,7 +9,7 @@ st.subheader('Delete Index')
 
 with st.spinner(text="Loading..."):
     index_names = azureVectorSearch.list_index_names()
-    selected_index_name = st.selectbox('How would you like to be contacted index?',index_names)
+    selected_index_name = st.selectbox('Please select an index name.',index_names)
 
 if st.button('Delete Index'):
     if selected_index_name == '':

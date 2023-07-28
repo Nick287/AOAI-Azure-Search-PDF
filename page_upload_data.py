@@ -9,8 +9,11 @@ from function.AzureVectorSearch import AzureVectorSearch
 
 st.title('Upload PDF file to Azure Vector Search')
 
-title = st.text_input('Please input index name', 'index-001')
-index_name = title
+with st.spinner(text="Loading..."):
+    azureVectorSearch = AzureVectorSearch()
+    index_names = azureVectorSearch.list_index_names()
+    index_name = st.selectbox('Please select an index name.',index_names)
+    st.write('You selected:', index_name)
 
 uploaded_file = st.file_uploader("Please Choose a DPF file",type="pdf")
 if uploaded_file is not None:
