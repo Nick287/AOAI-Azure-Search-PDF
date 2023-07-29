@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 
 from function.NormalizeText import NormalizeText
+from function.LangChainChunking import LangChanSplitter
 from function.AzureVectorSearch import AzureVectorSearch
 
 
@@ -24,7 +25,11 @@ if uploaded_file is not None:
     with st.spinner(text="Document uploading..."):
         # read pdf file
         pdf_reader = NormalizeText()
-        stirnglist = pdf_reader.get_doc_content(pdf_file)
+        longtxt = pdf_reader.get_doc_content_txt(pdf_file)
+
+        pdf_reader = LangChanSplitter()
+        stirnglist = pdf_reader.TokenTextSplitter(1000,100,longtxt)
+
         content_pd = pd.DataFrame({'content': stirnglist})
         df = content_pd.reset_index()
         df = df.rename(columns={'index': 'id'})
@@ -42,8 +47,8 @@ if uploaded_file is not None:
             for sub_df in df_array:
                 st.info("working on: " + str(current_job_numeber) + "/" +str(data_array_count))
                 sub_df['id'] = sub_df["id"].apply(lambda x : str(x + 1))
-                sub_df['product'] = sub_df["id"].apply(lambda x : "Surface Pro 9")
-                sub_df['category'] = sub_df["id"].apply(lambda x : "PC")
+                sub_df['product'] = sub_df["id"].apply(lambda x : "you can customise this field")
+                sub_df['category'] = sub_df["id"].apply(lambda x : "you can customise this field")
                 sub_df['contentVector'] = sub_df["content"].apply(lambda x : azureVectorSearch.generate_embeddings(x))
                 # upload data
                 list_of_dict = sub_df.to_dict('records')  

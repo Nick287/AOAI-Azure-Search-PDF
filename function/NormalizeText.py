@@ -40,3 +40,11 @@ class NormalizeText:
                 line = self.normalize_text_to_itemtext(page_text)
                 item_list.append(line)
         return item_list
+    
+    def get_doc_content_txt(self, pdf_file):
+        long_text = ""
+        pdf_reader = PyPDF2.PdfReader(pdf_file)  
+        for page in pdf_reader.pages:  
+            content = page.extract_text()
+            long_text += content
+        return long_text

@@ -7,7 +7,7 @@ RUN sudo apt-get install python3-pip -y
 
 RUN pip install azure-cli
 RUN pip install streamlit streamlit-authenticator streamlit-extras
-RUN pip install langchain openai tiktoken
+RUN pip install openai pandas openpyxl langchain tiktoken
 RUN pip install chromadb pypdf pycryptodome PyPDF2
 
 # RUN pip install --index-url=https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-python/pypi/simple/ azure-search-documents==11.4.0a20230509004
