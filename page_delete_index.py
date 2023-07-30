@@ -18,4 +18,5 @@ if st.button('Delete Index'):
     else:
         with st.spinner('Deleting index...'):
             azureVectorSearch.delete_search_index(selected_index_name)
+            st.experimental_rerun()
             st.success("done!")

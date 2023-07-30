@@ -4,7 +4,7 @@ RUN sudo apt-get update
 RUN sudo apt-get install python3-pip -y
 
 RUN pip install azure-cli
-RUN pip install streamlit streamlit-authenticator streamlit-extras
+RUN pip install streamlit streamlit-authenticator streamlit-extras st-pages
 RUN pip install openai pandas openpyxl langchain tiktoken
 RUN pip install PyPDF2
 
