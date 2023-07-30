@@ -8,7 +8,7 @@ from function.LangChainChunking import LangChanSplitter
 from function.AzureVectorSearch import AzureVectorSearch
 
 
-st.title('Upload PDF file to Azure Vector Search')
+st.title('Upload PDF file for Azure Vector Search')
 
 with st.spinner(text="Loading..."):
     azureVectorSearch = AzureVectorSearch()

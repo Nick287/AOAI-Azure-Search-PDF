@@ -40,7 +40,7 @@ def main():
         add_page_title()
         show_pages(
             [
-                Page("page_create_index.py", "Create Index", "✏️"),
+                Page("page_create_index.py", "Create Index", "✏️", True),
                 Page("page_delete_index.py", "Delete Index", "🎈"),
                 Page("page_upload_data.py", "Upload Data", ":books:"),
                 Page("page_vector_search.py", "Vector Search", "🎉"),
