@@ -13,7 +13,7 @@ def check_password():
 
             # hardcode username and password here just for testing purpose, please remove it in production
             st.session_state["username001"] == "admin" and
-            st.session_state["password001"] == "12345qwerty"
+            st.session_state["password001"] == "admin123456"
         ):
             del st.session_state["password"]  # don't store username + password
             del st.session_state["username"]

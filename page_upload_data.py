@@ -28,7 +28,7 @@ if uploaded_file is not None:
         longtxt = pdf_reader.get_doc_content_txt(pdf_file)
 
         pdf_reader = LangChanSplitter()
-        stirnglist = pdf_reader.TokenTextSplitter(1000,100,longtxt)
+        stirnglist = pdf_reader.TokenTextSplitter(100,10,longtxt)
 
         content_pd = pd.DataFrame({'content': stirnglist})
         df = content_pd.reset_index()

@@ -6,5 +6,6 @@
 	"build": {
         // Path is relataive to the devcontainer.json file.
         "dockerfile": "Dockerfile"
-    }
+    },
+    "runArgs": ["--env-file",".devcontainer/devcontainer.env"]
 }
