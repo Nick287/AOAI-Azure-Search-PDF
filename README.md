@@ -39,10 +39,20 @@ Azure OpenAI Service provides REST API access to OpenAI's powerful language mode
 5. Click the **Create Index** menu then create a new index
 ![image](images/create_index.png)
 6. Click the **Upload Data** menu then select the index name you just created and upload PDF file.
-![image](images/upload_data.png)
+    - the PDF doucmnet will upload to server momory and then convert to text first.
+    - the text will split to multiple sentences by chunking method.
+    - the sentence will convert to vector by Azure Open AI Embedding.
+    - the vector will upload to Azure Search index.
+
+    ![image](images/upload_data.png)
 7. search the content from the PDF file
-![image](images/search.png)
-8. Delete the index
+    - the search text will convert to vector by Azure Open AI Embedding.
+    - the vector will search from Azure Search index.
+    - the search result will show top 5 result with similarity score for each result.
+    - Then will base on the top 5 result to do Azure open AI completion to generate the final result.
+
+    ![image](images/search.png)
+8. Delete the index. And please note that if you delete the index, all the data will be deleted as well.
 ![image](images/delete_index.png)
 
 ## Azure Search Index Management
@@ -109,5 +119,9 @@ class LangChanSplitter:
         doc_list = text_splitter.split_text(content)
         return doc_list
 ```
- 
+
+chinking is a tread off between the accuracy and performance. if you want to get more accurate result you can set the chunk_size to smaller value. but it will impact the performance. if you want to get better performance you can set the chunk_size to bigger value. but it will impact the accuracy.
+
+you may need test the chunking result to see which one is more resonable. for example below code will do chunking with different chunk_size and chunk_overlap.
+
 if you want to know more about LangChain please refer to [LangChain Split](https://python.langchain.com/docs/modules/data_connection/document_transformers/text_splitters/character_text_splitter)
