@@ -15,6 +15,6 @@ RUN pip install azure-search-documents --pre
 
 EXPOSE 80
 
-COPY . .  
+COPY . .
 
 ENTRYPOINT ["streamlit", "run", "page_home.py", "--server.port=8501", "--server.address=0.0.0.0"]

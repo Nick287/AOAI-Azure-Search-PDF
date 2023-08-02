@@ -2,10 +2,10 @@ import streamlit as st
 from st_pages import Page, show_pages, add_page_title
 
 def check_password():
-    """Returns `True` if the user had a correct password."""
+    # """Returns `True` if the user had a correct password."""
 
     def password_entered():        
-        """Checks whether a password entered by the user is correct."""
+        # """Checks whether a password entered by the user is correct."""
         if (
             # st.session_state["username"] in st.secrets["passwords"]
             # and st.session_state["password"]

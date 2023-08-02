@@ -109,5 +109,5 @@ class LangChanSplitter:
         doc_list = text_splitter.split_text(content)
         return doc_list
 ```
-
+ 
 if you want to know more about LangChain please refer to [LangChain Split](https://python.langchain.com/docs/modules/data_connection/document_transformers/text_splitters/character_text_splitter)

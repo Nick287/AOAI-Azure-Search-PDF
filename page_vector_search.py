@@ -47,5 +47,4 @@ if prompt:
         retrieval_prepped = retrieval_prompt.replace('SEARCH_QUERY_HERE',prompt).replace('SEARCH_CONTENT_HERE',search_content)
         complet_result = azureVectorSearch.openAI_ChatCompletion(retrieval_prepped)
         st.write(f"{complet_result}\n\n")
-
     # st.success("done!")
