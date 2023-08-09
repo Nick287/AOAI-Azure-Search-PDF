@@ -7,10 +7,11 @@ Actually, Azure Search does not support PDF files natively. In this sample, we w
 
 In this sample, you will learn how to:
 
+- Azure Open AI Embedding
 - List all Azure Search indexes
 - Create Azure Search index
 - Delete Azure Search index
-- upload data to Azure Search index
+- Upload data to Azure Search index
 - Search data from Azure Search by vector
 
 ## Prerequisites
@@ -18,8 +19,9 @@ In this sample, you will learn how to:
 - Azure Subscription
 - Azure Search (Azure Cognitive Search)
 - Azure Open AI (embedding model - text-embedding-ada-002)
+- Azure Opne AI (GPT-3.5 or GPT-4)
 - Visual Studio Code
-- docker
+- Docker
 - streamlit
 
 ## Azure Search
