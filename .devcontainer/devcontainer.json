@@ -5,7 +5,8 @@
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
 	"build": {
         // Path is relataive to the devcontainer.json file.
-        "dockerfile": "Dockerfile"
+        "dockerfile": "Dockerfile",
+		"context": ".."
     },
     "runArgs": ["--env-file",".devcontainer/devcontainer.env"]
 }
