@@ -35,7 +35,9 @@ class AzureVectorSearch:
         self.credential = AzureKeyCredential(AZURE_SEARCH_API_KEY)
 
     def openAI_ChatCompletion(self, query):
-        retrieval = openai.ChatCompletion.create(engine=CHAT_MODEL,messages=[{'role':"user",'content': query}],max_tokens=500)
+        # https://platform.openai.com/docs/guides/gpt/chat-completions-api
+        # retrieval = openai.ChatCompletion.create(engine=CHAT_MODEL,messages=[{'role':"user",'content': query}],max_tokens=500)
+        retrieval = openai.ChatCompletion.create(engine=CHAT_MODEL,messages=[{'role':"user",'content': query}])
         # Response provided by GPT-3.5
         return retrieval['choices'][0]['message']['content']
 
