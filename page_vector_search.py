@@ -3,7 +3,7 @@ from function.AzureVectorSearch import AzureVectorSearch
 
 # Build a prompt to provide the original query, the result and ask to summarise for the user
 retrieval_prompt = '''Use the content to answer the search query the customer has sent.
-If you can't answer the user's question, say "Sorry, I am unable to answer the question with the content". Do not guess.
+If the content can not answer the user's question, please provide a reasonable answer.
 
 Search query: 
 
