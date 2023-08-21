@@ -1,5 +1,6 @@
 import streamlit as st
 from st_pages import Page, show_pages, add_page_title
+from function.AzureAIToken import *
 
 def check_password():
     # """Returns `True` if the user had a correct password."""
@@ -30,22 +31,29 @@ def check_password():
             st.experimental_rerun()
         else:
             st.error("😕 wrong username or password")
+
+def init():
+    add_page_title()
+    show_pages(
+        [
+            Page("page_create_index.py", "Create Index", "✏️", True),
+            Page("page_delete_index.py", "Delete Index", "🎈"),
+            Page("page_upload_data.py", "Upload Data", ":books:"),
+            Page("page_vector_search.py", "Vector Search", "🎉"),
+        ]
+    )
+
 # Streamlit application
 def main():
-    if "password_correct" not in st.session_state:
-        st.session_state.password_correct = False
-    if not st.session_state["password_correct"]:
-        check_password()
+    if Login == "True":
+        if "password_correct" not in st.session_state:
+            st.session_state.password_correct = False
+        if not st.session_state["password_correct"]:
+            check_password()
+        else:
+            init()
     else:
-        add_page_title()
-        show_pages(
-            [
-                Page("page_create_index.py", "Create Index", "✏️", True),
-                Page("page_delete_index.py", "Delete Index", "🎈"),
-                Page("page_upload_data.py", "Upload Data", ":books:"),
-                Page("page_vector_search.py", "Vector Search", "🎉"),
-            ]
-        )
+        init()
 
 if __name__ == "__main__":
     main()
