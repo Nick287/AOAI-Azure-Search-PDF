@@ -39,7 +39,7 @@ if uploaded_file is not None:
         data_array_count = len(df_array)
         # create search index
         azureVectorSearch = AzureVectorSearch()
-        azureVectorSearch.create_search_index(index_name)
+        # azureVectorSearch.create_search_index(index_name)
         with st.expander(f"log info:"):
             st.info("total batch job: " + str(data_array_count))
             new_df_array = []

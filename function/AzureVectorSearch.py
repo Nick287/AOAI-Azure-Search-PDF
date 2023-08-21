@@ -34,10 +34,10 @@ class AzureVectorSearch:
     def __init__(self):  
         self.credential = AzureKeyCredential(AZURE_SEARCH_API_KEY)
 
-    def openAI_ChatCompletion(self, query):
+    def openAI_ChatCompletion(self, sys_meg, query):
         # https://platform.openai.com/docs/guides/gpt/chat-completions-api
         # retrieval = openai.ChatCompletion.create(engine=CHAT_MODEL,messages=[{'role':"user",'content': query}],max_tokens=500)
-        retrieval = openai.ChatCompletion.create(engine=CHAT_MODEL,messages=[{'role':"user",'content': query}])
+        retrieval = openai.ChatCompletion.create(engine=CHAT_MODEL,messages=[{'role':"system",'content': sys_meg},{'role':"user",'content': query}], temperature=0)
         # Response provided by GPT-3.5
         return retrieval['choices'][0]['message']['content']
 
@@ -49,7 +49,6 @@ class AzureVectorSearch:
         embeddings = response['data'][0]['embedding']
         return embeddings
         
-    
     def delete_search_index(self, index_name):
         # Delete a search index
         index_client = SearchIndexClient(
