@@ -32,7 +32,16 @@ Azure search as know as Azure Cognitive Search, is a search-as-a-service cloud s
 
 Azure OpenAI Service provides REST API access to OpenAI's powerful language models including the GPT-4, GPT-35-Turbo, and Embeddings model series. In addition, the new GPT-4 and gpt-35-turbo model series have now reached general availability. These models can be easily adapted to your specific task including but not limited to content generation, summarization, semantic search, and natural language to code translation. Users can access the service through REST APIs, Python SDK, or our web-based interface in the Azure OpenAI Studio. In this sample, we will use Azure Open AI Embeddings model to convert the PDF content text to vector.
 
+## PDF file upload to Azure Search
+
+![image](images/pdf_upload.png)
+
+## Vaector search from Azure Search and summary by Azure Open AI
+
+![image](images/pdf_search.png)
+
 ## How to run this sample
+
 1. Open the project in Visual Studio Code with Dev container
 2. Run the following command **streamlit run page_home.py**
 3. Open the browser and go to http://localhost:8501
