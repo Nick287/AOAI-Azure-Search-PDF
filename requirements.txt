@@ -11,3 +11,4 @@ tiktoken
 PyPDF2
 azure-identity
 azure-search-documents==11.4.0b6
+chromadb
