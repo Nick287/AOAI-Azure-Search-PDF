@@ -5,6 +5,8 @@ class ChromaHelper:
     def __init__(self):
         current_path = os.getcwd()    
         self.data_path = current_path+"/chromedb/db"
+        # current_path = "/mnt/azure"  
+        # self.data_path = current_path + "/chromedb/db"  
 
     def delete_index(self, index_name):
         # Delete a search index
