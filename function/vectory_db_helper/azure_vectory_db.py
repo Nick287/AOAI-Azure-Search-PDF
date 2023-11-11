@@ -23,18 +23,22 @@ from azure.search.documents.indexes.models import (
 ) 
 
 from function.abstract_vectory_db.vectory_db import vectory_db
-from function.openai_helper.openai_function import openai_helper
+from function.openai_helper.openai_function import *
+
+import pandas as pd
+import numpy as np  
 
 class azure_vectory_db(vectory_db):
     
-    def __init__(self):  
-        self.credential = AzureKeyCredential(AZURE_SEARCH_API_KEY)
+    def __init__(self):
+        self.service_endpoint = os.environ["AZURE_SEARCH_SERVICE_ENDPOINT"]
+        self.credential = AzureKeyCredential(os.environ["AZURE_SEARCH_API_KEY"])
         self.openai_helper = openai_helper()
 
     def create_index(self, index_name):
         # Create a search index
         index_client = SearchIndexClient(
-            endpoint=AZURE_SEARCH_SERVICE_ENDPOINT, credential=self.credential)
+            endpoint=self.service_endpoint, credential=self.credential)
 
         fields = [
             SimpleField(name="id", type=SearchFieldDataType.String, key=True, sortable=True, filterable=True, facetable=True),
@@ -82,25 +86,34 @@ class azure_vectory_db(vectory_db):
     def delete_index(self, index_name):
         # Delete a search index
         index_client = SearchIndexClient(
-            endpoint=AZURE_SEARCH_SERVICE_ENDPOINT, credential=self.credential)
+            endpoint=self.service_endpoint, credential=self.credential)
         result = index_client.delete_index(index_name)
         return result
 
     def list_index_names(self):
-        index_client = SearchIndexClient(endpoint=AZURE_SEARCH_SERVICE_ENDPOINT, credential=self.credential)
+        index_client = SearchIndexClient(endpoint=self.service_endpoint, credential=self.credential)
         index_names = index_client.list_index_names()
         return index_names
 
-    def upload_documents(self, index_name, documents):
-        search_client = SearchClient(endpoint=AZURE_SEARCH_SERVICE_ENDPOINT, index_name=index_name, credential=self.credential)
-        result = search_client.upload_documents(documents)
+    def upload_documents(self, index_name, dataframe):
+
+        _openai = openai_helper()
+        dataframe = dataframe.rename(columns={'document': 'content'})  
+        dataframe['product'] = dataframe["id"].apply(lambda x : "you can customise this field")
+        dataframe['category'] = dataframe["id"].apply(lambda x : "you can customise this field")
+        dataframe['contentVector'] = dataframe["content"].apply(lambda x : _openai.generate_embeddings(x))
+        list_of_dict = dataframe.to_dict('records')  
+
+        search_client = SearchClient(endpoint=self.service_endpoint, index_name=index_name, credential=self.credential)
+        result = search_client.upload_documents(list_of_dict)
         return result
     
-    def similarity_search(self, index_name, vector_fields, search_text):
-        search_client = SearchClient(AZURE_SEARCH_SERVICE_ENDPOINT, index_name, credential=self.credential)  
+    def similarity_search(self, index_name, search_text):
+        vector_fields = "contentVector"
+        search_client = SearchClient(self.service_endpoint, index_name, credential=self.credential)  
         results = search_client.search(  
             search_text=None,  
-            vector=self.openai_helper.get_embedding(search_text),
+            vector=self.openai_helper.generate_embeddings(search_text),
             top_k=5,
             vector_fields=vector_fields,
             select=["product", "category", "content"],
@@ -113,5 +126,7 @@ class azure_vectory_db(vectory_db):
         #     print(f"updateby: {result['updateby']}")  
         #     print(f"customer: {result['customer']}")  
         #     print(f"Category: {result['category']}\n")  
-
-        return results
+        df_results = pd.DataFrame(list(results))
+        df_results = df_results.rename(columns={'content': 'document'})
+        df_results['documents'] = df_results['document'].apply(lambda x: np.array([x])) 
+        return df_results

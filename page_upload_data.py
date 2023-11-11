@@ -10,8 +10,7 @@ from function.vectory_db_helper.vectory_db_factory import *
 from function.abstract_vectory_db.vectory_db import *
 from function.openai_helper.openai_function import *
 
-vectory_db = vectory_db_factory().create_vectory_db(vectory_db_type.chroma_db)
-openai_client = openai_helper(openai_type.openai)
+vectory_db = vectory_db_factory().create_vectory_db(vectory_db_type.azure_cognitive_search)
 
 st.title('Upload PDF file for Azure Vector Search')
 
@@ -48,10 +47,7 @@ if uploaded_file is not None:
             current_job_numeber = 1
             for sub_df in df_array:
                 st.info("working on: " + str(current_job_numeber) + "/" +str(data_array_count))
-
-                documents = sub_df["document"].to_list()
-                ids = sub_df["id"].to_list()  
-                vectory_db.upload_documents(index_name, ids, documents)
+                vectory_db.upload_documents(index_name, sub_df)
                 new_df_array.append(sub_df)
                 current_job_numeber+=1
 

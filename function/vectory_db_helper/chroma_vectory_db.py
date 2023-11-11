@@ -1,5 +1,7 @@
 import chromadb
 import os
+import pandas as pd
+
 from function.abstract_vectory_db.vectory_db import vectory_db
 
 class chroma_vectory_db(vectory_db):    
@@ -29,7 +31,11 @@ class chroma_vectory_db(vectory_db):
         collection_names = [collection.name for collection in client.list_collections()]  
         return collection_names
     
-    def upload_documents(self, index_name, ids, documents):
+    def upload_documents(self, index_name, dataframe):
+
+        documents = dataframe["document"].to_list()
+        ids = dataframe["id"].to_list()  
+
         client = chromadb.PersistentClient(path=self.data_path)
         collection = client.get_collection(name=index_name)
         result = collection.add(
@@ -42,9 +48,12 @@ class chroma_vectory_db(vectory_db):
     def similarity_search(self, index_name, search_text):
         client = chromadb.PersistentClient(path=self.data_path)
         collection = client.get_collection(name=index_name)
-        return collection.query(
+        results = collection.query(
             query_texts=[search_text],
             n_results=5,
             # where={"metadata_field": "is_equal_to_this"},
             # where_document={"$contains":"search_string"}
         )
+    
+        df_results = pd.DataFrame(results)
+        return df_results

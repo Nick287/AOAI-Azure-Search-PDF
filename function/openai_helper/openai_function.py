@@ -46,8 +46,12 @@ class openai_helper():
         return response.choices[0].message.content
 
     @retry(wait=wait_random_exponential(min=1, max=20), stop=stop_after_attempt(6))
-    def get_embedding(self, text):
-        # model="text-embedding-ada-002"
-        model = os.environ.get("EMBEDDING_MODEL")
-        text = text.replace("\n", " ")
-        return self.client.embeddings.create(input = [text], model=model)['data'][0]['embedding']
+    def generate_embeddings(self, text):
+        try:
+            # model="text-embedding-ada-002"
+            model = os.environ.get("EMBEDDING_MODEL")
+            # text = text.replace("\n", " ")
+            return self.client.embeddings.create(input = [text], model=model).data[0].embedding
+        except Exception as e:
+            print(e)
+            raise e

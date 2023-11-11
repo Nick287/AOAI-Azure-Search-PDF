@@ -5,7 +5,7 @@ from function.abstract_vectory_db.vectory_db import *
 from function.openai_helper.openai_function import *
 from function.openai_helper.prompt_meg import *
 
-vectory_db = vectory_db_factory().create_vectory_db(vectory_db_type.chroma_db)
+vectory_db = vectory_db_factory().create_vectory_db(vectory_db_type.azure_cognitive_search)
 openai_client = openai_helper(openai_type.azure)
 
 st.title('Please input your question and press enter to search:')

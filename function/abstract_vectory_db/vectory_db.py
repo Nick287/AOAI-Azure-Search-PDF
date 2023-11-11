@@ -14,7 +14,7 @@ class vectory_db(ABC):
         pass
 
     @abstractmethod
-    def upload_documents(self, *args, **kwargs):  
+    def upload_documents(self, index_name, dataframe):  
         pass
 
     @abstractmethod
