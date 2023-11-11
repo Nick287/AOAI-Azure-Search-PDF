@@ -1,6 +1,7 @@
 import streamlit as st
 from st_pages import Page, show_pages, add_page_title
 from function.AzureAIToken import *
+from app_config.keys_config import *
 
 def check_password():
     # """Returns `True` if the user had a correct password."""

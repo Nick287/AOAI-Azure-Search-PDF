@@ -1,11 +1,11 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from function.AzureVectorSearch import AzureVectorSearch
-from function.ChromaHelper import ChromaHelper
 
-# azureVectorSearch = AzureVectorSearch()
-chromaHelper = ChromaHelper()
+from function.vectory_db_helper.vectory_db_factory import *
+from function.abstract_vectory_db.vectory_db import *
+
+vectory_db = vectory_db_factory().create_vectory_db(vectory_db_type.chroma_db)
 
 st.title('Index Management')
 st.subheader('Create Index')
@@ -18,5 +18,5 @@ if st.button('Create Index') or index_name != '':
     else:
         with st.spinner('Creating index...'):
             # azureVectorSearch.create_search_index(index_name)
-            chromaHelper.create_index(index_name)
+            vectory_db.create_index(index_name)
             st.success("done!")
