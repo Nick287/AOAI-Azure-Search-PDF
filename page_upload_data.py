@@ -10,9 +10,12 @@ from function.vectory_db_helper.vectory_db_factory import *
 from function.abstract_vectory_db.vectory_db import *
 from function.openai_helper.openai_function import *
 
-vectory_db = vectory_db_factory().create_vectory_db(vectory_db_type.azure_cognitive_search)
+from app_config.keys_config import *
+from app_config.website_config import *
 
-st.title('Upload PDF file for Azure Vector Search')
+vectory_db = vectory_db_factory().create_vectory_db(DB_TYPE)
+
+st.title('Upload PDF file to Vector DB for Search')
 
 with st.spinner(text="Loading..."):
     index_names = vectory_db.list_index_names()

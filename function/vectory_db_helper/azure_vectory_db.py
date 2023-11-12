@@ -1,4 +1,3 @@
-from function.AzureAIToken import *
 # Import required libraries  
 import os  
 import json 

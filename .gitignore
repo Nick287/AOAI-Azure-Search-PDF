@@ -6,8 +6,8 @@ __pycache__/
 # C extensions
 *.so
 
-app_config/
-*
+app_config/keys_config.py
+chromedb/*
 
 # Distribution / packaging
 .Python

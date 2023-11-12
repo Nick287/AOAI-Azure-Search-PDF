@@ -4,9 +4,11 @@ from function.vectory_db_helper.vectory_db_factory import *
 from function.abstract_vectory_db.vectory_db import *
 from function.openai_helper.openai_function import *
 from function.openai_helper.prompt_meg import *
+from app_config.keys_config import *
+from app_config.website_config import *
 
-vectory_db = vectory_db_factory().create_vectory_db(vectory_db_type.azure_cognitive_search)
-openai_client = openai_helper(openai_type.azure)
+vectory_db = vectory_db_factory().create_vectory_db(DB_TYPE)
+openai_client = openai_helper(AI_TYPE)
 
 st.title('Please input your question and press enter to search:')
 with st.spinner(text="Loading..."):
