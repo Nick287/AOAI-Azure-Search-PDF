@@ -12,3 +12,7 @@ PyPDF2
 azure-identity
 azure-search-documents==11.4.0b6
 chromadb
+pathlib==1.0.1 
+ruamel-yaml==0.17.16
+langchain 
+llama-cpp-python

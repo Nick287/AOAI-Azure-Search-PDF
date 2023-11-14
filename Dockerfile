@@ -1,13 +1,26 @@
-FROM mcr.microsoft.com/devcontainers/base:ubuntu AS base
+ARG CUDA_IMAGE="nvidia/cuda:12.0.1-devel-ubuntu22.04"
+ARG N_THREADS=32
+FROM ${CUDA_IMAGE}
+
+#FROM mcr.microsoft.com/devcontainers/base:ubuntu AS base
 
 WORKDIR /app
 
-RUN sudo apt-get update
-RUN sudo apt-get install python3-pip -y
+# RUN apt-get update
+# RUN apt-get install python3-pip -y
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends build-essential libcurl4-openssl-dev libboost-python-dev libpython3-dev python3 python3-pip cmake curl git&& \
+    rm -rf /var/lib/apt/lists/*
+RUN pip3 install --upgrade pip
+RUN pip3 install setuptools
+RUN pip3 install ptvsd==4.1.3
 
 COPY ./requirements.txt /app/requirements.txt
 RUN pip install -r requirements.txt
-
+RUN pip3 install python-dotenv==0.21.0
+RUN pip3 install langchain 
+RUN pip3 install llama-cpp-python
 # RUN pip install azure-cli
 # RUN pip install streamlit streamlit-authenticator streamlit-extras st-pages
 # RUN pip install openai pandas openpyxl langchain tiktoken
@@ -20,3 +33,4 @@ EXPOSE 80
 COPY . .
 
 ENTRYPOINT ["streamlit", "run", "page_home.py", "--server.port=8501", "--server.address=0.0.0.0"]
+#ENTRYPOINT ["streamlit", "run", "page_home.py"]
