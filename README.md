@@ -42,7 +42,7 @@ Azure OpenAI Service provides REST API access to OpenAI's powerful language mode
 
 ## How to run this sample
 
-1. Open the project in Visual Studio Code with Dev container
+1. Open the project in Visual Studio Code with Dev container [^1]
 2. Run the following command **streamlit run page_home.py**
 3. Open the browser and go to http://localhost:8501
 4. input the username and password to login (default username: admin, password: admin123456)
