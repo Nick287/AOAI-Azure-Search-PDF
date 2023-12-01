@@ -127,5 +127,8 @@ class azure_vectory_db(vectory_db):
         #     print(f"Category: {result['category']}\n")  
         df_results = pd.DataFrame(list(results))
         df_results = df_results.rename(columns={'content': 'document'})
-        df_results['documents'] = df_results['document'].apply(lambda x: np.array([x])) 
-        return df_results
+
+        new_df_results = pd.DataFrame()    
+        new_df_results.at[0, 'documents'] = df_results['document'].apply(lambda x: np.array([x])).tolist()  
+
+        return new_df_results

@@ -32,7 +32,7 @@ if prompt:
                 st.info(f"############################# # {index} data ################################") 
                 st.info(f"content: {doc}")  
                 index = index + 1
-                search_content += doc + "\n"
+                search_content += str(doc) + "\n"  
 
         retrieval_prepped = retrieval_prompt.replace('SEARCH_QUERY_HERE',prompt).replace('SEARCH_CONTENT_HERE',search_content)
         complet_result = openai_client.openAI_ChatCompletion(system_meg, retrieval_prepped)

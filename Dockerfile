@@ -1,3 +1,9 @@
+# https://mcr.microsoft.com/en-us/product/devcontainers/base/about
+# mcr.microsoft.com/devcontainers/base:ubuntu (latest LTS release)
+# mcr.microsoft.com/devcontainers/base:ubuntu-22.04 (or jammy)
+# mcr.microsoft.com/devcontainers/base:ubuntu-20.04 (or focal)
+# mcr.microsoft.com/devcontainers/base:ubuntu-18.04 (or bionic)
+
 FROM mcr.microsoft.com/devcontainers/base:ubuntu AS base
 
 WORKDIR /app
