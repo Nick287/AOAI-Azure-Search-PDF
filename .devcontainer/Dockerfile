@@ -3,6 +3,8 @@ FROM mcr.microsoft.com/devcontainers/base:ubuntu AS base
 RUN sudo apt-get update
 RUN sudo apt-get install python3-pip -y
 
+RUN apt-get update && apt-get install -y ffmpeg
+
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install -r /tmp/requirements.txt && \
     rm /tmp/requirements.txt

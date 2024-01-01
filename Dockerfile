@@ -11,6 +11,8 @@ WORKDIR /app
 RUN sudo apt-get update
 RUN sudo apt-get install python3-pip -y
 
+RUN apt-get update && apt-get install -y ffmpeg
+
 COPY ./requirements.txt /app/requirements.txt
 RUN pip install -r requirements.txt
 

@@ -41,6 +41,7 @@ def init():
             Page("page_delete_index.py", "Delete Index", "🎈"),
             Page("page_upload_data.py", "Upload Data", ":books:"),
             Page("page_vector_search.py", "Vector Search", "🎉"),
+            Page("page_whisper.py", "Transcription", "🔍"),
         ]
     )
 
