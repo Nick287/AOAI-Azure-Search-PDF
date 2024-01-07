@@ -1,42 +1,42 @@
-# AOAI-Azure-Search-PDF
+# Retrieval Augmented Generation (RAG) with Azure AI Search and Azure Open AI
 
 ## Overview
 
-In this sample, we will show you how to use Azure Search create index and search information from PDF files.
-Actually, Azure Search does not support PDF files natively. In this sample, we will use Azure Open AI embedding API convert the content text to vector from PDF files and then use Azure Search to index and search the vector.
+In this sample, we will show you how to use Azure AI Search create index and search information from PDF files.
+Actually, Azure AI Search does not support PDF files natively. In this sample, we will use Azure Open AI embedding API convert the content text to vector from PDF files and then use Azure AI Search to index and search the vector.
 
 In this sample, you will learn how to:
 
 - Azure Open AI Embedding
-- List all Azure Search indexes
-- Create Azure Search index
-- Delete Azure Search index
-- Upload data to Azure Search index
-- Search data from Azure Search by vector
+- List all Azure AI Search indexes
+- Create Azure AI Search index
+- Delete Azure AI Search index
+- Upload data to Azure AI Search index
+- Search data from Azure AI Search by vector
 
 ## Prerequisites
 
 - Azure Subscription
-- Azure Search (Azure Cognitive Search)
+- Azure AI Search (Azure Cognitive Search)
 - Azure Open AI (embedding model - text-embedding-ada-002)
 - Azure Opne AI (GPT-3.5 or GPT-4)
 - Visual Studio Code
 - Docker
 - streamlit
 
-## Azure Search
+## Azure AI Search
 
-Azure search as know as Azure Cognitive Search, is a search-as-a-service cloud solution that gives developers APIs and tools for adding a rich search experience over private, heterogeneous content in web, mobile, and enterprise applications. Azure Search is a fully managed service that reduces the complexity and costs associated with AI-based search infrastructure management and maintenance. Azure Search is a part of the Microsoft Azure Cognitive Services family of AI APIs and SDKs, which enables developers to easily add cognitive features into their applications. In this sample, we will use Azure Search as a vector search engine.
+Azure AI Search as know as Azure Cognitive Search, is a search-as-a-service cloud solution that gives developers APIs and tools for adding a rich search experience over private, heterogeneous content in web, mobile, and enterprise applications. Azure AI Search is a fully managed service that reduces the complexity and costs associated with AI-based search infrastructure management and maintenance. Azure AI Search is a part of the Microsoft Azure Cognitive Services family of AI APIs and SDKs, which enables developers to easily add cognitive features into their applications. In this sample, we will use Azure AI Search as a vector search engine.
 
 ## Azure Open AI
 
 Azure OpenAI Service provides REST API access to OpenAI's powerful language models including the GPT-4, GPT-35-Turbo, and Embeddings model series. In addition, the new GPT-4 and gpt-35-turbo model series have now reached general availability. These models can be easily adapted to your specific task including but not limited to content generation, summarization, semantic search, and natural language to code translation. Users can access the service through REST APIs, Python SDK, or our web-based interface in the Azure OpenAI Studio. In this sample, we will use Azure Open AI Embeddings model to convert the PDF content text to vector.
 
-## PDF file upload to Azure Search
+## PDF file upload to Azure AI Search
 
 ![image](images/pdf_upload.png)
 
-## Vaector search from Azure Search and summary by Azure Open AI
+## Vaector search from Azure AI Search and summary by Azure Open AI
 
 ![image](images/pdf_search.png)
 
@@ -53,12 +53,12 @@ Azure OpenAI Service provides REST API access to OpenAI's powerful language mode
     - the PDF doucmnet will upload to server momory and then convert to text first.
     - the text will split to multiple sentences by chunking method.
     - the sentence will convert to vector by Azure Open AI Embedding.
-    - the vector will upload to Azure Search index.
+    - the vector will upload to Azure AI Search index.
 
     ![image](images/upload_data.png)
 7. search the content from the PDF file
     - the search text will convert to vector by Azure Open AI Embedding.
-    - the vector will search from Azure Search index.
+    - the vector will search from Azure AI Search index.
     - the search result will show top 5 result with similarity score for each result.
     - Then will base on the top 5 result to do Azure open AI completion to generate the final result.
 
@@ -66,9 +66,9 @@ Azure OpenAI Service provides REST API access to OpenAI's powerful language mode
 8. Delete the index. And please note that if you delete the index, all the data will be deleted as well.
 ![image](images/delete_index.png)
 
-## Azure Search Index Management
+## Azure AI Search Index Management
 
-Please refer code (AzureVectorSearch.py) in this sample this class how to use Azure Search SDK Management to index list existing or create and delete index. for example below code it will do vector search by index. 
+Please refer code (AzureVectorSearch.py) in this sample this class how to use Azure AI Search SDK Management to index list existing or create and delete index. for example below code it will do vector search by index. 
 
 ```pytho
 def vector_similarity_search(self, index_name, vector_fields, search_text):
@@ -82,7 +82,7 @@ def vector_similarity_search(self, index_name, vector_fields, search_text):
     )
 ```
 
-- [Azure Search Index Management](https://docs.microsoft.com/en-us/azure/search/search-create-index-portal) to create and delete Azure Search index.
+- [Azure AI Search Index Management](https://docs.microsoft.com/en-us/azure/search/search-create-index-portal) to create and delete Azure AI Search index.
 
 ## Azure Open AI Embedding
 
