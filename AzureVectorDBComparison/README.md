@@ -1,0 +1,65 @@
+# Azure Vector DB
+
+## Introduction
+
+The increasing popularity of large language models has led to a surge in semantic search, essentially a 'nearest neighbor' or k-NN search amongst a heap of vectors with appended metadata, also known as a vector database. If you're an engineer trying to transition an LLM-based prototype into a functional product, deciding on the right vector database might be a challenge.
+
+In the initial proof-of-concept stage, the choice of database for storing your vectors is often inconsequential. However, as you advance to the prototype or production stage, the heap of vectors may considerably increase. You may need to manage access to this heap or ensure its preservation in case of server failure.
+
+With a plethora of different products in the market, each catering to a specific audience, it's clear that there is no one-size-fits-all solution. Therefore, it's important to consider certain factors when selecting the most suitable data management application for your needs.
+
+This document compares the services of vector databases supported on Azure, from aspects such as scalability, types of supported indexes which may impact query performance, query methods, pricing, and the number of supported SDKs. This comparison aims to help you quickly understand these services within a short period of time.
+
+## Comparison Table
+
+| Database Name | Fully managed |  Vertical Scaling(scale-up) | Horizontal Scaling(scale-out) | Vector Search Index configuration | Hybrid search | Pricing | API |
+| :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| Azure AI Search | Azure | max 12 partition (Storage) |  max 12 replicas (throughput) | Hierarchical Navigable Small World (HNSW) <br> Exhaustive KNN <br> _If you choose HNSW on a field, you can opt in for exhaustive KNN at query time. But the other direction won’t work: if you choose exhaustive, you can’t later request HNSW search because the extra data structures that enable approximate search don’t exist._ |  YES <br> [Reciprocal Rank Fusion (RRF)](https://learn.microsoft.com/en-us/azure/search/hybrid-search-ranking) <br> [Hybrid query](https://learn.microsoft.com/en-us/azure/search/hybrid-search-how-to-query) | The charge is applied per the number of search units (SU) allocated to the service. Search units are units of capacity. Total SU is the product of replicas and partitions (R x P = SU) used by your service. This case you may need to consider by vector size [Basic](https://azure.microsoft.com/en-us/pricing/details/search/) (1GB) - S3(36GB) / per service <br> [Key points about vector size limit](https://learn.microsoft.com/en-us/azure/search/vector-search-index-size?tabs=portal-vector-quota#key-points-about-vector-size-limits) <br> [Vector index size limits](https://learn.microsoft.com/en-us/azure/search/search-limits-quotas-capacity#vector-index-size-limits)| [REST API](https://github.com/Azure/azure-search-vector-samples/tree/main/postman-collection) / [.NET](https://github.com/Azure/azure-search-vector-samples/tree/main/demo-dotnet) / [JAVA](https://github.com/Azure/azure-search-vector-samples/tree/main/demo-java) / [Python](https://github.com/Azure/azure-search-vector-samples/tree/main/demo-python) / [JavaScript](https://github.com/Azure/azure-search-vector-samples/tree/main/demo-javascript) |
+| Azure Redis Cache | Azure | YES By [Service Level](https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-how-to-scale?tabs=scale-up-and-down-with-basic-standard-and-premium#scope-of-availability)  | YES By [Service Level](https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-how-to-scale?tabs=scale-up-and-down-with-basic-standard-and-premium#scope-of-availability) | K-Nearest Neighbors (KNN) <br> Approximate Nearest Neighbors (ANN)|  [Hybrid searches](https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-tutorial-vector-similarity#hybrid-searches) ([filter](https://cookbook.openai.com/examples/vector_databases/redis/redis-hybrid-query-examples)) | [RediSearch module](https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-overview-vector-similarity#scope-of-availability) only available in [Enterprise](https://azure.microsoft.com/en-us/pricing/details/cache/) from 4GB - 400GB and Enterprise Flash(preview) | [.NET](https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-dotnet-how-to-use-azure-redis-cache) / [JAVA](https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-java-get-started?tabs=bash) / [Node.js](https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-nodejs-get-started) / [Python](https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-python-get-started) / [Go](https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-go-get-started) / [Rust](https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-rust-get-started) |
+| Azure Postgre SQL | Azure | [YES](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/how-to-scale-compute-storage-portal) | [YES (Read Replica)](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-read-replicas) | Inverted File with Flat Compression (IVVFlat) <br> Hierarchical Navigable Small Worlds (HNSW) |  [Hybrid searches](https://github.com/pgvector/pgvector?tab=readme-ov-file#hybrid-search) | PostgreSQL Flexible Server from B1ms(around $ 10~19/month by region)<br>  Storage can be provisioned up to 16 TiB | C / C++ / C#, F#, Visual Basic / Crystal / Dart / Elixir / Go /Haskell / Java, Kotlin Groovy, / Scala / JavaScript, TypeScript / Julia/ Lisp / Lua / Nim / OCaml / Perl / PHP / Python / R / Ruby / Rust / Swift / Zig / [Client Libraries](https://github.com/pgvector/pgvector?tab=readme-ov-file#languages)|
+| CosmosDB Postgre SQL| Azure | [YES](https://learn.microsoft.com/en-us/azure/cosmos-db/postgresql/howto-scale-grow) | powered by the [Citus database extension](https://github.com/citusdata/citus) <br> [Read replicas in Azure Cosmos DB for PostgreSQL](https://learn.microsoft.com/en-us/azure/cosmos-db/postgresql/concepts-read-replicas) |Inverted File with Flat Compression (IVVFlat) <br> Hierarchical Navigable Small Worlds (HNSW) |  [Hybrid searches](https://github.com/pgvector/pgvector?tab=readme-ov-file#hybrid-search) | From Single node(1vCore - 2GB) (around $ 14~19/month by region) <br> You can configure storage for Azure Cosmos DB coordinator/worker nodes upto 16TiB |  C / C++ / C#, F#, Visual Basic / Crystal / Dart / Elixir / Go /Haskell / Java, Kotlin Groovy, / Scala / JavaScript, TypeScript / Julia/ Lisp / Lua / Nim / OCaml / Perl / PHP / Python / R / Ruby / Rust / Swift / Zig / [Client Libraries](https://github.com/pgvector/pgvector?tab=readme-ov-file#languages) |
+| CosmosDB MomgoDB | Azure | [YES by Cosmos DB for MongoDB vCore cluster](https://learn.microsoft.com/en-us/azure/cosmos-db/mongodb/vcore/how-to-scale-cluster) | [YES](https://learn.microsoft.com/en-us/azure/cosmos-db/partitioning-overview) | [vector-ivf](https://learn.microsoft.com/en-us/azure/cosmos-db/mongodb/vcore/vector-search#create-a-vector-index) is supported. [vector-hnsw](https://learn.microsoft.com/en-us/azure/cosmos-db/mongodb/vcore/vector-search#hnsw-vector-index-preview) is available as a preview <br> _Only use HNSW indexes on a cluster tier of M40 or higher_| [Hybrid searches](https://www.mongodb.com/docs/atlas/atlas-vector-search/vector-search-stage/#std-label-return-vector-search-results) (filter - comparison query and aggregation pipeline) | From [M40](https://azure.microsoft.com/en-us/pricing/details/cosmos-db/mongodb/) around $0.4~0.7/hour per Node | C# / Java / Node / Pymongo / [Client Libraries](https://www.mongodb.com/docs/atlas/atlas-vector-search/vector-search-stage/#supported-clients) |
+| Azure Data Explorer | Azure | [YES](https://learn.microsoft.com/en-us/azure/data-explorer/manage-cluster-vertical-scaling) | [YES](https://learn.microsoft.com/en-us/azure/data-explorer/manage-cluster-horizontal-scaling) | Index not supported <br> [Use series_cosine_similarity(), the new optimized native function to calculate cosine similarity](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/series-cosine-similarity-function) | [by KQL Search](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/kql-quick-reference) | From around $100/month (2vCPU 30GB Storage) <br> [Optimizing Vector Similarity Searches at Scale](https://techcommunity.microsoft.com/t5/azure-data-explorer-blog/optimizing-vector-similarity-searches-at-scale/ba-p/3881884) | .NET / Java / Python / R / Go / Ruby / PowerShell / Azure CLI / REST API / TypeScript (Node.JS/Browser) / [Kusto Client Libraries](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/api/client-libraries) |
+
+## Conclusion
+
+The above comparisons are all Azure Managed services, so the security and reliability are relatively good, and they all provide optional disaster recovery services at an additional cost.
+Choosing a vector database for your application is not about finding the "best", but about finding the one that best meets your needs.
+In addition to pure performance, consider other aspects that may not be so obvious. If you are considering using a third-party solution, make sure it complies with all legal requirements and works well with your current system. By considering all these points, we hope you can find the right database to help your application run smoothly.
+
+## References
+
+- Azure AI Search
+
+  - [Relevance scoring in hybrid search using Reciprocal Rank Fusion (RRF)](https://learn.microsoft.com/en-us/azure/search/hybrid-search-ranking)
+  - [Create a hybrid query in Azure AI Search](https://learn.microsoft.com/en-us/azure/search/hybrid-search-how-to-query)
+  - [Service limits in Azure AI Search](https://learn.microsoft.com/en-us/azure/search/search-limits-quotas-capacity)
+  - [Vector index size limits](https://learn.microsoft.com/en-us/azure/search/vector-search-index-size?tabs=portal-vector-quota#key-points-about-vector-size-limits)
+
+- Azure Redis Cache
+  - [About Vector Embeddings and Vector Search in Azure Cache for Redis](https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-overview-vector-similarity)
+  - [Vector Similarity Search with Azure Cache for Redis Enterprise](https://techcommunity.microsoft.com/t5/azure-developer-community-blog/vector-similarity-search-with-azure-cache-for-redis-enterprise/ba-p/3822059)
+  - [Introducing Vector Search Similarity Capabilities in Azure Cache for Redis Enterprise](https://techcommunity.microsoft.com/t5/azure-developer-community-blog/introducing-vector-search-similarity-capabilities-in-azure-cache/ba-p/3827512)
+
+- Azure Postgre SQL
+  - [Scale operations in Azure Database for PostgreSQL - Flexible Server](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/how-to-scale-compute-storage-portal)
+  - [Read replicas in Azure Database for PostgreSQL - Flexible Server](https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-read-replicas)
+  - [Open-source vector similarity search for Postgres](https://github.com/pgvector/pgvector?tab=readme-ov-file#hybrid-search)
+
+- CosmosDB Postgre SQL
+  - [Scale a cluster in Azure Cosmos DB for PostgreSQL](https://learn.microsoft.com/en-us/azure/cosmos-db/postgresql/howto-scale-grow)
+  - [The Citus database](https://github.com/citusdata/citus)
+  - [Read replicas in Azure Cosmos DB for PostgreSQL](https://learn.microsoft.com/en-us/azure/cosmos-db/postgresql/concepts-read-replicas)
+
+- CosmosDB MomgoDB
+  - [Scaling and configuring Your Azure Cosmos DB for MongoDB vCore cluster](https://learn.microsoft.com/en-us/azure/cosmos-db/mongodb/vcore/how-to-scale-cluster)
+  - [Partitioning and horizontal scaling in Azure Cosmos DB](https://learn.microsoft.com/en-us/azure/cosmos-db/partitioning-overview)
+  - [Use vector search on embeddings in Azure Cosmos DB for MongoDB vCore](https://learn.microsoft.com/en-us/azure/cosmos-db/mongodb/vcore/vector-search#create-a-vector-index)
+  - [MongoDB Run Vector Search Queries](https://www.mongodb.com/docs/atlas/atlas-vector-search/vector-search-stage/#std-label-return-vector-search-results)
+  - [Azure Cosmos DB pricing](https://azure.microsoft.com/en-us/pricing/details/cosmos-db/mongodb/)
+
+- Azure Data Explorer
+  - [Manage cluster vertical scaling (scale up) in Azure Data Explorer to accommodate changing demand](https://learn.microsoft.com/en-us/azure/data-explorer/manage-cluster-vertical-scaling)
+  - [Manage cluster horizontal scaling (scale out) in Azure Data Explorer to accommodate changing demand](https://learn.microsoft.com/en-us/azure/data-explorer/manage-cluster-horizontal-scaling)
+  - [KQL quick reference](https://learn.microsoft.com/en-us/azure/data-explorer/kusto/query/kql-quick-reference)
+  - [Optimizing Vector Similarity Searches at Scale](https://techcommunity.microsoft.com/t5/azure-data-explorer-blog/optimizing-vector-similarity-searches-at-scale/ba-p/3881884)
