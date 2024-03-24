@@ -1,4 +1,4 @@
-# Azure Vector DB
+# Azure Vector DB Comparison
 
 ## Introduction
 
