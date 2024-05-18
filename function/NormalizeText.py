@@ -48,3 +48,16 @@ class NormalizeText:
             content = page.extract_text()
             long_text += content
         return long_text
+    
+    def get_doc_content_txt_v2(self, pdf_file, file_name):
+        long_text_list = []
+        pdf_reader = PyPDF2.PdfReader(pdf_file)
+
+        for i, page in enumerate(pdf_reader.pages):
+            page_text = {}
+            page_text["content"] = page.extract_text()
+            page_text["file_name"] = file_name
+            page_text["page_num"] = i + 1
+            long_text_list.append(page_text)
+
+        return long_text_list
