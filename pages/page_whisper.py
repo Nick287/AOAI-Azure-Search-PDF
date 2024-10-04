@@ -1,6 +1,4 @@
 import streamlit as st
-from st_pages import Page, show_pages, add_page_title
-
 import os
 import io
 import openai
@@ -8,6 +6,9 @@ from pydub import AudioSegment
 from io import BytesIO 
 from pydub.silence import detect_nonsilent  
 import requests
+
+from navigation import make_sidebar
+make_sidebar()
 
 WHISPER_TRANSCRIBE_WEB_API = os.environ.get('WHISPER_TRANSCRIBE_WEB_API')
 WHISPER_TRANSCRIBE_API_KEY = os.environ.get('WHISPER_TRANSCRIBE_API_KEY')

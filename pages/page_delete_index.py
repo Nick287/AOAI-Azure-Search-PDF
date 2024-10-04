@@ -6,6 +6,9 @@ from app_config.website_config import *
 
 vectory_db = vectory_db_factory().create_vectory_db(DB_TYPE)
 
+from navigation import make_sidebar
+make_sidebar()
+
 st.title('Index Management')
 st.subheader('Delete Index')
 

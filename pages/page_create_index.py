@@ -4,6 +4,9 @@ from function.abstract_vectory_db.vectory_db import *
 from app_config.keys_config import *
 from app_config.website_config import *
 
+from navigation import make_sidebar
+make_sidebar()
+
 vectory_db = vectory_db_factory().create_vectory_db(DB_TYPE)
 
 st.title('Index Management')

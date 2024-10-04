@@ -1,8 +1,4 @@
-azure-cli
 streamlit
-streamlit-authenticator
-streamlit-extras
-st-pages
 openai
 pandas
 openpyxl
@@ -13,4 +9,5 @@ azure-identity
 azure-search-documents==11.4.0
 chromadb
 pydub
-azure-storage-blob  
+azure-storage-blob
+azure-ai-documentintelligence

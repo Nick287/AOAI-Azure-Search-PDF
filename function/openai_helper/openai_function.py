@@ -10,7 +10,7 @@ class openai_type(Enum):
 
 class openai_helper():
 
-    def __init__(self, openai_type=openai_type.openai):
+    def __init__(self, openai_type=openai_type.azure):
         if openai_type == openai_type.azure:
             # gets the API Key from environment variable AZURE_OPENAI_API_KEY
             AZURE_OPENAI_API_KEY = os.environ.get('AZURE_OPENAI_API_KEY')

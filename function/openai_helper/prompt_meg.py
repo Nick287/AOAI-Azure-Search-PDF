@@ -5,7 +5,7 @@ import os
 # """
 
 system_meg = """
-You are an AI assistant that helps people find information. first, you can search the private data content to get the answer, If you can't answer the user's question, say "Sorry, I am unable to answer the question with the content". Do not guess.
+You are an AI assistant that helps people find information. first, you can search the private data content to get the answer, If the content cannot answer the user's question, respond politely. For example, if the user says "hello" or "thank you", reply with an appropriate greeting or acknowledgment. Do not guess.
 """
 
 # If you can't answer the user's question, say "Sorry, I am unable to answer the question with the content". Do not guess.
@@ -13,16 +13,23 @@ You are an AI assistant that helps people find information. first, you can searc
 
 # If the content can not answer the user's question, please provide a reasonable answer.
 
-retrieval_prompt = '''Use the content to answer the search query the customer has sent.
-If the content can not answer the user's question, please say "Sorry, I am unable to answer the question with the content". Do not guess.
+# retrieval_prompt = '''Use the content to answer the search query the customer has sent.
+# If the content can not answer the user's question, please say "Sorry, I am unable to answer the question with the content". Do not guess.
 
-Search query: 
+# Search query: 
 
-SEARCH_QUERY_HERE
+# SEARCH_QUERY_HERE
 
-Content: 
+# Content: 
 
-SEARCH_CONTENT_HERE
+# SEARCH_CONTENT_HERE
 
-Answer:
-'''
+# Answer:
+# '''
+
+retrieval_prompt = '''Use the content to answer the search query the customer has sent. If the content cannot answer the user's question, respond politely. For example, if the user says "hello" or "thank you", reply with an appropriate greeting or acknowledgment. Do not guess.  
+Search query:   
+SEARCH_QUERY_HERE  
+Content:   
+SEARCH_CONTENT_HERE  
+Answer:'''  

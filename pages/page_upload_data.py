@@ -13,6 +13,10 @@ from function.openai_helper.openai_function import *
 from app_config.keys_config import *
 from app_config.website_config import *
 
+from function.document_intelligence import *
+
+from navigation import make_sidebar
+make_sidebar()
 
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient, ContentSettings  
 import io  
@@ -57,42 +61,26 @@ if uploaded_file is not None:
         connection_string = ""
         container_name = "pdf"
         file_name = "files/"+uploaded_file.name
-        upload_pdf_to_blob_storage(connection_string, container_name, file_name, pdf_file)  
+        # upload_pdf_to_blob_storage(connection_string, container_name, file_name, pdf_file)  
         
-        # read pdf file
-        pdf_reader = NormalizeText()
-        longtxt_list = pdf_reader.get_doc_content_txt_v2(pdf_file,file_name)
+        os.environ['DOCUMENTINTELLIGENCECLIENT_ENDPOINT'] = "https://bodocumentintelligence001.cognitiveservices.azure.com/"
+        os.environ['DOCUMENTINTELLIGENCECLIENT_KEY'] = "8721341d84ab448085fa9c62dcaf6739"
 
-        pdf_reader = LangChanSplitter()
+        document_intelligence_helper = document_intelligence()
 
-        splitted_text_list = []
-        for longtxt in longtxt_list:
-            splitted_text = {}
-            splitted_text["splitted_page_content"] = pdf_reader.TokenTextSplitter(300, 100, longtxt["content"])
-            splitted_text["splitted_page_num"] = longtxt["page_num"]
-            splitted_text["file_name"] = longtxt["file_name"]
-            splitted_text_list.append(splitted_text)
-
-        # stirnglist = pdf_reader.TokenTextSplitter(300,100,longtxt)
-
-        # df = pd.DataFrame({'document': stirnglist})
-        # df = df.dropna() 
-        # df['id'] = df.apply(lambda x : str(uuid.uuid4()), axis=1)  
-
+        page_content_list = document_intelligence_helper.get_page_content_list(bytes_data)
 
         splitted_text_df = pd.DataFrame()
-        for splitted_page_text in splitted_text_list:
-            df = pd.DataFrame({'document': splitted_page_text["splitted_page_content"]})
+        page_num = 1
+        for page_text in page_content_list:
+            df = pd.DataFrame({'document': [page_text]})
             df = df.dropna()
-            df['page_num'] = splitted_page_text["splitted_page_num"]
-            df['file_name'] = splitted_page_text["file_name"]
-            df['id'] = df.apply(lambda x : str(uuid.uuid4()), axis=1)
+            df['page_num'] = page_num
+            df['file_name'] = uploaded_file.name
+            df['id'] = df.apply(lambda x: str(uuid.uuid4()), axis=1)
             splitted_text_df = pd.concat([splitted_text_df, df], ignore_index=True)
+            page_num += 1
         splitted_text_df["page_num"] = splitted_text_df["page_num"].astype(str)    
-
-        # split df to 50 records per batch
-        # df_array = np.array_split(df, len(df) // 50 + 1)  
-        # data_array_count = len(df_array)
 
         df_array = np.array_split(splitted_text_df, len(splitted_text_df) // 50 + 1)  
         data_array_count = len(df_array)

@@ -10,6 +10,9 @@ from app_config.website_config import *
 vectory_db = vectory_db_factory().create_vectory_db(DB_TYPE)
 openai_client = openai_helper(AI_TYPE)
 
+from navigation import make_sidebar
+make_sidebar()
+
 st.title('Please input your question:')
 with st.spinner(text="Loading..."):
     index_names = vectory_db.list_index_names()
