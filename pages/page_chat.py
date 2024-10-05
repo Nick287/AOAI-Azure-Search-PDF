@@ -16,12 +16,25 @@ make_sidebar()
 
 # st.title("Chat with your document")
 
+col1, col2 = st.columns([3, 1], vertical_alignment="bottom")
+
+with col1:
+    with st.spinner(text="Loading..."):
+        index_names = vectory_db.list_index_names()
+        index_name = st.selectbox('Please select an index name.',index_names)
+
+with col2:
+    if st.button('Clean Chat History'):
+        if 'messages' in st.session_state:
+            del st.session_state['messages']
+            st.rerun()
+
 gpt4o_mini_api_key = os.environ["temp-gpt-4o-mini-key"]
 
-with st.spinner(text="Loading..."):
-    index_names = vectory_db.list_index_names()
-    index_name = st.selectbox('Please select an index name.',index_names)
-    st.write('You selected:', index_name)
+# with st.spinner(text="Loading..."):
+#     index_names = vectory_db.list_index_names()
+#     index_name = st.selectbox('Please select an index name.',index_names)
+#     st.write('You selected:', index_name)
 
 client = AzureOpenAI(
     azure_endpoint="https://openAIBo.openai.azure.com/",

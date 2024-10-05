@@ -27,6 +27,7 @@ def make_sidebar():
             st.page_link("pages/page_upload_data.py", label="Upload Data", icon="📚"),
             st.page_link("pages/page_vector_search.py", label="Vector Search", icon="🎉"),
             st.page_link("pages/page_chat.py", label="Chat Search", icon="💬"),
+            st.page_link("pages/page_free_chat.py", label="Free Chat", icon="🍁"),
             st.page_link("pages/page_whisper.py", label="Transcription", icon="🔍"),
 
             st.write("")
