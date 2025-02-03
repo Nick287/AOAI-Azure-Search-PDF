@@ -14,6 +14,17 @@
             "program": "/usr/local/bin/streamlit",
             "console": "integratedTerminal",
             "justMyCode": true
+        },
+        {
+            "name": "Python: debug Streamli test File",
+            "type": "python",
+            "request": "launch",
+            "args": [
+                "run", "pages/test.py"
+            ],
+            "program": "/usr/local/bin/streamlit",
+            "console": "integratedTerminal",
+            "justMyCode": true
         }
     ]
 }

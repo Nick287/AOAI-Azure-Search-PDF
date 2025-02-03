@@ -16,7 +16,7 @@ def get_current_page_name():
 
 def make_sidebar():
     with st.sidebar:
-        st.title("💎 RAG Bot")
+        st.title("💎 Product Copilot")
         st.write("")
         st.write("")
 
@@ -28,6 +28,7 @@ def make_sidebar():
             st.page_link("pages/page_vector_search.py", label="Vector Search", icon="🎉"),
             st.page_link("pages/page_chat.py", label="Chat Search", icon="💬"),
             st.page_link("pages/page_free_chat.py", label="Free Chat", icon="🍁"),
+            st.page_link("pages/page_deepseek-r1.py", label="Deepseek-R1", icon="🐋"),
             st.page_link("pages/page_whisper.py", label="Transcription", icon="🔍"),
 
             st.write("")

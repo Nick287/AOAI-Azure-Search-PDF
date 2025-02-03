@@ -4,7 +4,7 @@ from navigation import make_sidebar
 
 make_sidebar()
 
-st.title("Welcome to RAG Chat Bot")
+st.title("Welcome Let's build Copilot!")
 
 st.write("Please log in to continue (username `*****`, password `*****`).")
 
